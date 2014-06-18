@@ -15,6 +15,8 @@ void {lower}_del(struct {title} *);
 '''
 
 C_TEXT = '''
+#include "{lower}.h"
+
 #include "mm.h"
 
 static struct MMType * size = NULL;

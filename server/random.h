@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdint.h>
 
 /* Object state */
 struct Random;

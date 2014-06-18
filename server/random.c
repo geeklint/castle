@@ -1,7 +1,7 @@
-
+#include "random.h" 
 /* Mersenne twiser (code adapted from wikipedia) */
 
-#import "mm.h"
+#include "mm.h"
 
 static struct MMType * size = NULL;
 
@@ -35,10 +35,10 @@ static void generate_numbers(struct Random * self){
     int y;
     
     for (int i = 0; i < 624; ++i){
-        y = (MT[i] & 0x80000000) + (MT[(i+1) % 624] & 0x7fffffff);
-        MT[i] = MT[(i + 397) & 624] ^ (y >> 1);
+        y = (self->MT[i] & 0x80000000) + (self->MT[(i+1) % 624] & 0x7fffffff);
+        self->MT[i] = self->MT[(i + 397) & 624] ^ (y >> 1);
         if (y & 1){ // y is odd
-             MT[i] = MT[i] ^ 0x9908b0df
+             self->MT[i] = self->MT[i] ^ 0x9908b0df;
         }
     }
 }
@@ -50,7 +50,7 @@ uint32_t random_random(struct Random * self){
     if (!self->index){
         generate_numbers(self);
     }
-    y = self->MT[index];
+    y = self->MT[self->index];
     y ^= (y >> 11);
     y ^= ((y << 7) & 0x9d2c5680);
     y ^= ((y << 15) & 0xefc60000);

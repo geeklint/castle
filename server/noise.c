@@ -1,3 +1,4 @@
+#include "noise.h"
 /*
     This file adapted from java code by Stefan Gustavson.
     Source: http://staffwww.itn.liu.se/~stegu/simplexnoise/SimplexNoise.java
@@ -16,9 +17,9 @@ struct Noise{
 };
 
 /* Grad array */
-static signed char GRAD[][] = {
+static signed char GRAD[][2] = {
         {1,1}, {-1,1}, {1,-1}, {-1,-1}, {1,0}, {-1,0},
-        {1,0}, {-1,0}, {0,1}, {0,-1}, {0,1}, {0,-1}}
+        {1,0}, {-1,0}, {0,1}, {0,-1}, {0,1}, {0,-1}};
 
 /* Skew constants */
 static const double F2 = // 0.5*(sqrt(3.0)-1.0)
@@ -45,7 +46,7 @@ struct Noise * noise_new(struct Random * rand){
     
     if ((self = mm_alloc(size))){
         for (i = 0; i < 512; ++i){
-            self->perm = i;
+            self->perm[i] = i;
         }
         random_shuffle(rand, self->perm, sizeof(short), 512);
         for (i = 0; i < 512; ++i){

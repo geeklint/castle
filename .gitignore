@@ -1,3 +1,6 @@
+# C object files
+*.o
+
 # gedit backup files
 *~
 
