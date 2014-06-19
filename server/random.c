@@ -1,6 +1,8 @@
 #include "random.h" 
 /* Mersenne twiser (code adapted from wikipedia) */
 
+#include <string.h>
+
 #include "mm.h"
 
 static struct MMType * size = NULL;
@@ -68,8 +70,21 @@ int random_range(struct Random * self, int min, int max){
     return choice + min;
 }
 
-/* Shuffle with static size of a uint16_t */
-static void random_shuffle_shorts(
+/* Static size shuffles */
+static void random_shuffle_8(
+        struct Random * self, uint8_t * array, size_t count){
+    uint8_t temp;
+    int index;
+
+    while (--count){
+        index = random_range(self, 0, count);
+        temp = array[count];
+        array[count] = array[index];
+        array[index] = temp;
+    }
+}
+
+static void random_shuffle_16(
         struct Random * self, uint16_t * array, size_t count){
     uint16_t temp;
     int index;
@@ -82,16 +97,48 @@ static void random_shuffle_shorts(
     }
 }
 
+static void random_shuffle_32(
+        struct Random * self, uint32_t * array, size_t count){
+    uint32_t temp;
+    int index;
+
+    while (--count){
+        index = random_range(self, 0, count);
+        temp = array[count];
+        array[count] = array[index];
+        array[index] = temp;
+    }
+}
+
+
+
 /* Shuffle array */
 void random_shuffle(
         struct Random * self, void * array, size_t block, size_t count){
+	void * temp;
+	int index;
+
     switch (block){
-        case 16:
-            random_shuffle_shorts(self, array, count);
-            break;
+    	case 1:
+    		random_shuffle_8(self, array, count);
+    		return;
+        case 2:
+            random_shuffle_16(self, array, count);
+            return;
+        case 4:
+        	random_shuffle_32(self, array, count);
+        	return;
         default:
             break;
     }
+    temp = malloc(block);
+    while (--count){
+    	index = random_range(self, 0, count);
+    	memcpy(temp, block * count + array, block);
+    	memcpy(block * count + array, block * index + array, block);
+    	memcpy(block * index + array, temp, block);
+    }
+    free(temp);
 }
 
 /* Deinitialize generator */

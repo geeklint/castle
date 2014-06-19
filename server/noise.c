@@ -26,14 +26,6 @@ static const double F2 = // 0.5*(sqrt(3.0)-1.0)
         0.3660254037844385965883020617184229195117950439453125;
 static const double G2 = // (3.0-sqrt(3.0))/6.0
         0.2113248654051871344705659794271923601627349853515625;
-static const double F3 = // 1.0/3.0
-        0.333333333333333314829616256247390992939472198486328125;
-static const double G3 = // 1.0/6.0
-        0.1666666666666666574148081281236954964697360992431640625;
-static const double F4 = // (sqrt(5.0)-1.0)/4.0
-        0.30901699437494745126286943559534847736358642578125;
-static const double G4 = // (5.0-Math.sqrt(5.0))/20.0
-        0.1381966011250105041963109897551476024091243743896484375;
 
 /* Initialize new Noise */
 struct Noise * noise_new(struct Random * rand){
@@ -45,8 +37,9 @@ struct Noise * noise_new(struct Random * rand){
     }
     
     if ((self = mm_alloc(size))){
-        for (i = 0; i < 512; ++i){
+        for (i = 0; i < 256; ++i){
             self->perm[i] = i;
+            self->perm[i+256] = i;
         }
         random_shuffle(rand, self->perm, sizeof(short), 512);
         for (i = 0; i < 512; ++i){
