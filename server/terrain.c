@@ -10,13 +10,13 @@ static struct MMType * size = NULL;
 
 /* Object state */
 struct Terrain{
-	unsigned int levels;
-    struct Noise * noise;
-    struct Terrain * micro;
+    struct Noise * mega;
+    struct Noise * macro;
+    struct Noise * micro;
 };
 
 /* Initialize new Terrain */
-struct Terrain * terrain_new(uint32_t seed, unsigned int levels){
+struct Terrain * terrain_new(uint32_t seed){
     struct Terrain * self;
     int rotate;
     
@@ -25,16 +25,13 @@ struct Terrain * terrain_new(uint32_t seed, unsigned int levels){
     }
     
     if ((self = mm_alloc(size))){
-        self->noise = noise_new(random_new(seed));
-        self->levels = levels;
-        if (levels){
-		    rotate = seed & 0x3f;
-		    self->micro = terrain_new(
-		    	(seed >> rotate) | (seed << (32 - rotate)),
-		    	levels - 1);
-		} else {
-			self->micro = NULL;
-		}
+        self->mega = noise_new(random_new(seed));
+	    rotate = seed & 0x3f;
+    	seed = (seed >> rotate) | (seed << (32 - rotate));
+        self->macro = noise_new(random_new(seed));
+	    rotate = seed & 0x3f;
+    	seed = (seed >> rotate) | (seed << (32 - rotate));
+        self->micro = noise_new(random_new(seed));
     }
     return self;
 }

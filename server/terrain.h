@@ -5,7 +5,7 @@
 struct Terrain;
 
 /* Initialize new Terrain */
-struct Terrain * terrain_new(uint32_t seed, unsigned int levels);
+struct Terrain * terrain_new(uint32_t seed);
 
 /* Deinitialize Terrain */
 void terrain_del(struct Terrain *);
