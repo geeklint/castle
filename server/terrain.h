@@ -1,3 +1,5 @@
+#ifndef TERRAIN_H_
+#define TERRAIN_H_
 
 #include <stdint.h>
 
@@ -12,3 +14,5 @@ void terrain_del(struct Terrain *);
 
 /* Get value */
 double terrain_terrain(struct Terrain *, double x, double y);
+
+#endif

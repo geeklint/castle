@@ -3,6 +3,7 @@
 
 #include <math.h>
 
+#include "climate.h"
 #include "mm.h"
 #include "random.h"
 #include "terrain.h"
@@ -12,8 +13,8 @@ static struct MMType * size = NULL;
 /* Object state */
 struct World{
     uint32_t seed;
-    struct Terrain * altitude,
-                   * temperature,
+    struct Terrain * altitude;
+    struct Climate * temperature,
                    * humidity,
                    * evil;
 };
@@ -30,10 +31,10 @@ struct World * world_new(uint32_t seed){
     if ((self = mm_alloc(size))){
         self->seed = seed;
     	random = random_new(seed);
-    	self->altitude = terrain_new(random_random(random), 3);
-    	self->temperature = terrain_new(random_random(random), 2);
-    	self->humidity = terrain_new(random_random(random), 2);
-    	self->evil = terrain_new(random_random(random), 2);
+    	self->altitude = terrain_new(random_random(random));
+    	self->temperature = climate_new(random_random(random));
+    	self->humidity = climate_new(random_random(random));
+    	self->evil = climate_new(random_random(random));
     }
     return self;
 }
@@ -69,15 +70,16 @@ static enum Biome get_biome(double humid, double temp){
 void world_dot(struct World * self, struct WorldDot * dot, long x, long y){
 	double altitude, temperature, humidity;
 	
+	dot->evil = climate_climate(self->evil, x, y);
 	dot->altitude = altitude = terrain_terrain(
-			self->altitude, (double) x, (double) y);
+			self->altitude, x, y);
 	if (altitude > 2./3.){
 		dot->biome = BiomeMountain;
 	} else if (altitude < 1./3.){
 		dot->biome = BiomeOcean;
 	} else {
-		temperature = terrain_terrain(self->altitude, x / 10., y / 10.);
-		humidity = terrain_terrain(self->altitude, x / 10., y / 10.);
+		temperature = climate_climate(self->temperature, x, y);
+		humidity = climate_climate(self->humidity, x, y);
 		dot->biome = get_biome(humidity, temperature);
 	}
 }

@@ -38,33 +38,20 @@ struct Terrain * terrain_new(uint32_t seed){
 
 /* Deinitialize Terrain */
 void terrain_del(struct Terrain * self){
-	noise_del(self->noise);
-	if (self->micro){
-		terrain_del(self->micro);
-	}
+	noise_del(self->mega);
+	noise_del(self->macro);
+	noise_del(self->micro);
     mm_free(self);
 }
 
 /* Get value */
 double terrain_terrain(struct Terrain * self, double x, double y){
-	double u, f;
-	double min, mode, max, span;
+	double ue, ua, ui;
 	
-	f = pow(10, self->levels);
-	u = noise_noise(self->noise, x / f, y / f);
-	if (!self->micro){
-		return u;
-	} else {
-		min = (u + 1.5) / 4;
-		mode = (u + 1) / 2;
-		max = (u + 1) / 4;
-		span = max - min;
-		u = terrain_terrain(self->micro, x, y);
-		f = (mode - min) / span;
-		if (u < f){
-			return min + sqrt(u * span * (mode - min));
-		} else {
-			return max - sqrt((1 - u) * span * (max - mode));
-		}
-	}
+	ue = noise_noise(self->mega, x / 1000, y / 1000);
+	ua = noise_noise(self->macro, x / 100, y / 100);
+	ui = noise_noise(self->micro, x, y);
+	ue = 1 - sqrt((1 - ue)); // more ocean
+	ua = (3 * ue / 4 + .25) - .25 * sqrt(1 - ua); // pointy mountains
+	return .1 * ui + .9 * ua;
 }

@@ -1,3 +1,5 @@
+#ifndef WORLD_H_
+#define WORLD_H_
 
 #include <stdint.h>
 #include <stdio.h>
@@ -38,3 +40,5 @@ int world_save(struct World *, FILE *);
 
 /* Load world */
 struct World * world_load(FILE *);
+
+#endif /* WORLD_H_ */

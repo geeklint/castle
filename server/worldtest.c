@@ -1,3 +1,5 @@
+#ifdef BUILD_WORLDTEST
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -8,16 +10,16 @@
 #define HEIGHT 5000
 
 int biomecolors[][3] = {
-		{0, 0, 255},
-		{255, 255, 255},
-		{210, 180, 140},
-		{1, 50, 32},
-		{113, 188, 120},
-		{34, 139, 34},
-		{103, 76, 71},
-		{255, 255, 255},
-		{255, 255, 255},
-		{255, 255, 255}
+		{0, 0, 255},     // Blue Ocean
+		{255, 255, 255}, // White Mountain
+		{210, 180, 140}, // Tan Desert
+		{1, 50, 32},     // Dark Green Rainforest
+		{113, 188, 120}, // Light Green Plains
+		{34, 139, 34},   // Green Forest
+		{103, 76, 71},   // Liver Swamp
+		{255, 255, 255}, // White Snow
+		{255, 255, 255}, // White Tundra
+		{255, 255, 255}  // White Taiga
 };
 
 int main(){
@@ -47,3 +49,5 @@ int main(){
 	
 	return 0;
 }
+
+#endif /* BUILD_WORLDTEST */

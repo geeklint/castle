@@ -119,7 +119,7 @@ double noise_noise(struct Noise * self, double xin, double yin){
       n2 = t2 * t2 * dot(GRAD[gi2][0], GRAD[gi2][1], x2, y2);
     }
     // Add contributions from each corner to get the final noise value.
-    // The result is scaled to return values in the interval [-1,1].
-    return 70.0 * (n0 + n1 + n2);
+    // The result is scaled to return values in the interval [0,1].
+    return .5 + 35.0 * (n0 + n1 + n2);
 }
 

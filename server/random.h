@@ -1,3 +1,6 @@
+#ifndef RANDOM_H_
+#define RANDOM_H_
+
 #include <stdlib.h>
 #include <stdint.h>
 
@@ -18,3 +21,5 @@ void random_shuffle(struct Random *, void *, size_t block, size_t count);
 
 /* Deinitialize generator */
 void random_del(struct Random *);
+
+#endif /* RANDOM_H_ */

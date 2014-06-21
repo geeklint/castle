@@ -4,6 +4,9 @@ import os
 import sys
 
 H_TEXT = '''
+#ifndef {upper}_H_
+#define {upper}_H_
+
 /* Object state */
 struct {title};
 
@@ -12,6 +15,8 @@ struct {title} * {lower}_new();
 
 /* Deinitialize {title} */
 void {lower}_del(struct {title} *);
+
+#endif /* {upper}_H_ */
 '''
 
 C_TEXT = '''
@@ -22,7 +27,7 @@ C_TEXT = '''
 static struct MMType * size = NULL;
 
 /* Object state */
-struct {title}{{
+struct {title} {{
     
 }};
 
@@ -49,12 +54,13 @@ void {lower}_del(struct {title} * self){{
 if __name__ == '__main__':
     for name in sys.argv[1:]:
         title = name.title()
+        upper = name.upper()
         lower = name.lower()
         if os.path.exists(lower + '.h') or os.path.exists(lower + '.c'):
             print name, 'exists, skipping'
             continue
         with open(lower + '.h', 'w') as header:
-            header.write(H_TEXT.format(title=title, lower=lower))
+            header.write(H_TEXT.format(title=title, upper=upper, lower=lower))
         with open(lower + '.c', 'w') as source:
-            source.write(C_TEXT.format(title=title, lower=lower))
-        
+            source.write(C_TEXT.format(title=title, upper=upper, lower=lower))
+

@@ -1,3 +1,5 @@
+#ifndef NOISE_H_
+#define NOISE_H_
 
 #include "random.h"
 
@@ -12,3 +14,5 @@ void noise_del(struct Noise *);
 
 /* Get noise */
 double noise_noise(struct Noise *, double x, double y);
+
+#endif /* NOISE_H_ */
