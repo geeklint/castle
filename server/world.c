@@ -47,19 +47,29 @@ void world_del(struct World * self){
 }
 
 static enum Biome get_biome(double altitude, double climate){
-	enum Biome biomes[] = {BiomeRockyMountain, BiomePlains, BiomeDesert,
-						 BiomeForestMountain, BiomeForest, BiomeSwamp};
-	int offset;
 
-	offset = 3 * (climate > .5);
 	if (altitude > .75){
 		return BiomeMountainTop;
 	} else if (altitude > .625){
-		return biomes[offset];
+		if (climate > .5){
+			return BiomeForestMountain;
+		} else {
+			return BiomeRockyMountain;
+		}
 	} else if (altitude > .5){
-		return biomes[offset + 1];
+		if (climate > 2. / 3.){
+			return BiomeForest;
+		} else if (climate > 1. / 3.){
+			return BiomePlains;
+		} else {
+			return BiomeDesert;
+		}
 	} else if (altitude > .375){
-		return biomes[offset + 2];
+		if (climate > .5){
+			return BiomeSwamp;
+		} else {
+			return BiomeDesert;
+		}
 	} else if (altitude > .325){
 		return BiomeBeach;
 	} else {

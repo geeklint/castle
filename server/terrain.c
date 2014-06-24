@@ -3,6 +3,7 @@
 
 #include <math.h>
 
+#include "distribution.h"
 #include "mm.h"
 #include "noise.h"
 
@@ -51,7 +52,7 @@ double terrain_terrain(struct Terrain * self, double x, double y){
 	ue = noise_noise(self->mega, x / 1000, y / 1000);
 	ua = noise_noise(self->macro, x / 100, y / 100);
 	ui = noise_noise(self->micro, x, y);
-	ue = 1 - sqrt((1 - ue)); // more ocean
-	ua = (3 * ue / 4 + .25) - .25 * sqrt(1 - ua); // pointy mountains
-	return .1 * ui + .9 * ua;
+	ue = distribution_triangle(ue, 0); // more ocean
+	ua = distribution_triangle(ua, 0); // pointy mountains
+	return .1 * ui + .225 * ua + .675 * ue;
 }
