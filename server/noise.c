@@ -7,6 +7,7 @@
 #include <math.h> 
 
 #include "mm.h"
+#include "random.h"
 
 static struct MMType * size = NULL;
 
@@ -28,8 +29,9 @@ static const double G2 = // (3.0-sqrt(3.0))/6.0
         0.2113248654051871344705659794271923601627349853515625;
 
 /* Initialize new Noise */
-struct Noise * noise_new(struct Random * rand){
+struct Noise * noise_new(uint32_t seed){
     struct Noise * self;
+    struct Random * rand;
     int i;
     
     if (!size){
@@ -41,7 +43,9 @@ struct Noise * noise_new(struct Random * rand){
             self->perm[i] = i;
             self->perm[i+256] = i;
         }
+    	rand = random_new(seed);
         random_shuffle(rand, self->perm, sizeof(short), 512);
+        random_del(rand);
         for (i = 0; i < 512; ++i){
             self->permMod12[i] = self->perm[i] % 12;
         }

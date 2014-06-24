@@ -1,13 +1,13 @@
 #ifndef NOISE_H_
 #define NOISE_H_
 
-#include "random.h"
+#include <stdint.h>
 
 /* Object state */
 struct Noise;
 
 /* Initialize new Noise */
-struct Noise * noise_new(struct Random *);
+struct Noise * noise_new(uint32_t seed);
 
 /* Deinitialize Noise */
 void noise_del(struct Noise *);

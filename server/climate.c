@@ -21,14 +21,16 @@ struct Climate * climate_new(uint32_t seed){
     }
     
     if ((self = mm_alloc(size))){
-        self->mega = noise_new(random_new(seed));
-        self->macro = noise_new(random_new(~seed));
+        self->mega = noise_new(seed);
+        self->macro = noise_new(~seed);
     }
     return self;
 }
 
 /* Deinitialize Climate */
 void climate_del(struct Climate * self){
+	noise_del(self->mega);
+	noise_del(self->macro);
     mm_free(self);
 }
 

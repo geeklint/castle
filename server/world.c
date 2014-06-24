@@ -41,6 +41,10 @@ struct World * world_new(uint32_t seed){
 
 /* Deinitialize World */
 void world_del(struct World * self){
+	terrain_del(self->altitude);
+	climate_del(self->temperature);
+	climate_del(self->humidity);
+	climate_del(self->evil);
     mm_free(self);
 }
 

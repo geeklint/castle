@@ -25,13 +25,13 @@ struct Terrain * terrain_new(uint32_t seed){
     }
     
     if ((self = mm_alloc(size))){
-        self->mega = noise_new(random_new(seed));
+        self->mega = noise_new(seed);
 	    rotate = seed & 0x3f;
     	seed = (seed >> rotate) | (seed << (32 - rotate));
-        self->macro = noise_new(random_new(seed));
+        self->macro = noise_new(seed);
 	    rotate = seed & 0x3f;
     	seed = (seed >> rotate) | (seed << (32 - rotate));
-        self->micro = noise_new(random_new(seed));
+        self->micro = noise_new(seed);
     }
     return self;
 }
