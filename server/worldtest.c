@@ -6,8 +6,8 @@
 #include "world.h"
 
 #define SEED 1234
-#define WIDTH 7000
-#define HEIGHT 5000
+#define WIDTH 14000
+#define HEIGHT 10000
 
 int biomecolors[][3] = {
 		{0, 0, 255},     // Ocean,

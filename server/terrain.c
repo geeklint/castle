@@ -49,10 +49,11 @@ void terrain_del(struct Terrain * self){
 double terrain_terrain(struct Terrain * self, double x, double y){
 	double ue, ua, ui;
 	
-	ue = noise_noise(self->mega, x / 1000, y / 1000);
-	ua = noise_noise(self->macro, x / 100, y / 100);
-	ui = noise_noise(self->micro, x, y);
-	ue = distribution_triangle(ue, 0); // more ocean
-	ua = distribution_triangle(ua, 0); // pointy mountains
-	return .1 * ui + .225 * ua + .675 * ue;
+	ue = noise_noise(self->mega, x / 10000, y / 10000);
+	ua = noise_noise(self->macro, x / 1000, y / 1000);
+	ui = noise_noise(self->micro, x / 100, y / 100);
+	ue = distribution_itriangle(ue, .5); // continents
+	ua = distribution_triangle(ua, 0); // more ocean
+	ui = distribution_triangle(ui, 0); // pointy mountains
+	return .25 * ui + .25 * ua + .5 * ue;
 }
