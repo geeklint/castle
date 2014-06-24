@@ -6,20 +6,19 @@
 #include "world.h"
 
 #define SEED 1234
-#define WIDTH 5000
+#define WIDTH 7000
 #define HEIGHT 5000
 
 int biomecolors[][3] = {
-		{0, 0, 255},     // Blue Ocean
-		{255, 255, 255}, // White Mountain
-		{210, 180, 140}, // Tan Desert
-		{1, 50, 32},     // Dark Green Rainforest
-		{113, 188, 120}, // Light Green Plains
-		{34, 139, 34},   // Green Forest
-		{103, 76, 71},   // Liver Swamp
-		{255, 255, 255}, // White Snow
-		{255, 255, 255}, // White Tundra
-		{255, 255, 255}  // White Taiga
+		{0, 0, 255},     // Ocean,
+		{210, 180, 140}, // Beach,
+		{255, 255, 255}, // MountainTop,
+		{127, 127, 127}, // RockyMountain,
+		{34, 139, 34},   // ForestMountain,
+		{113, 188, 120}, // Plains,
+		{34, 139, 34},   // Forest,
+		{210, 180, 140}, // Desert,
+		{103, 76, 71},   // Swamp
 };
 
 int main(){

@@ -6,15 +6,14 @@
 
 enum Biome {
 	BiomeOcean,
-	BiomeMountain,
-	BiomeDesert,
-	BiomeRainforest,
+	BiomeBeach,
+	BiomeMountainTop,
+	BiomeRockyMountain,
+	BiomeForestMountain,
 	BiomePlains,
 	BiomeForest,
-	BiomeSwamp,
-	BiomeSnow,
-	BiomeTundra,
-	BiomeTaiga
+	BiomeDesert,
+	BiomeSwamp
 };
 
 struct WorldDot {

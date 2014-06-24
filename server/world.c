@@ -14,8 +14,7 @@ static struct MMType * size = NULL;
 struct World{
     uint32_t seed;
     struct Terrain * altitude;
-    struct Climate * temperature,
-                   * humidity,
+    struct Climate * climate,
                    * evil;
 };
 
@@ -32,9 +31,9 @@ struct World * world_new(uint32_t seed){
         self->seed = seed;
     	random = random_new(seed);
     	self->altitude = terrain_new(random_random(random));
-    	self->temperature = climate_new(random_random(random));
-    	self->humidity = climate_new(random_random(random));
+    	self->climate = climate_new(random_random(random));
     	self->evil = climate_new(random_random(random));
+    	random_del(random);
     }
     return self;
 }
@@ -42,50 +41,41 @@ struct World * world_new(uint32_t seed){
 /* Deinitialize World */
 void world_del(struct World * self){
 	terrain_del(self->altitude);
-	climate_del(self->temperature);
-	climate_del(self->humidity);
+	climate_del(self->climate);
 	climate_del(self->evil);
     mm_free(self);
 }
 
-static enum Biome get_biome(double humid, double temp){
-	if (temp > .5 + humid){
-		return BiomeDesert;
-	} else if (temp > 1.5 - humid){
-		return BiomeRainforest;
-	} else if (temp < .5 - humid){
-		return BiomeTundra;
-	} else if (temp < humid - .5){
-		return BiomeTaiga;
-	} else if (temp > humid){
-		if (temp > 1 - humid){
-			return BiomePlains;
-		} else {
-			return BiomeForest;
-		}
-	} else if (temp > 1 - humid){
-		return BiomeSwamp;
+static enum Biome get_biome(double altitude, double climate){
+	enum Biome biomes[] = {BiomeRockyMountain, BiomePlains, BiomeDesert,
+						 BiomeForestMountain, BiomeForest, BiomeSwamp};
+	int offset;
+
+	offset = 3 * (climate > .5);
+	if (altitude > .75){
+		return BiomeMountainTop;
+	} else if (altitude > .625){
+		return biomes[offset];
+	} else if (altitude > .5){
+		return biomes[offset + 1];
+	} else if (altitude > .375){
+		return biomes[offset + 2];
+	} else if (altitude > .325){
+		return BiomeBeach;
 	} else {
-		return BiomeSnow;
+		return BiomeOcean;
 	}
 }
 
 /* Get stats for a point in the world */
 void world_dot(struct World * self, struct WorldDot * dot, long x, long y){
-	double altitude, temperature, humidity;
+	double altitude, climate;
 	
 	dot->evil = climate_climate(self->evil, x, y);
 	dot->altitude = altitude = terrain_terrain(
 			self->altitude, x, y);
-	if (altitude > 2./3.){
-		dot->biome = BiomeMountain;
-	} else if (altitude < 1./3.){
-		dot->biome = BiomeOcean;
-	} else {
-		temperature = climate_climate(self->temperature, x, y);
-		humidity = climate_climate(self->humidity, x, y);
-		dot->biome = get_biome(humidity, temperature);
-	}
+	climate = climate_climate(self->climate, x, y);
+	dot->biome = get_biome(altitude, climate);
 }
 
 /* Save world */
